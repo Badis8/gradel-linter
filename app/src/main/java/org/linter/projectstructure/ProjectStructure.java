@@ -1,8 +1,7 @@
 package org.linter.projectstructure;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class ProjectStructure {
 
@@ -40,6 +39,43 @@ public class ProjectStructure {
 
     public List<Path> getDirectChildFiles() {
         return directChildFiles;
+    }
+
+    public Iterator<ProjectStructure> getProjectStructureAsAnIterator(){
+        return makeCurentProjectStructureIterator();
+    }
+
+    private Iterator<ProjectStructure> makeCurentProjectStructureIterator() {
+        return new Iterator<ProjectStructure>() {
+
+            private final Stack<ProjectStructure> stack = new Stack<>();
+
+            {
+
+                stack.push(ProjectStructure.this);
+            }
+
+            @Override
+            public boolean hasNext() {
+                return !stack.isEmpty();
+            }
+
+            @Override
+            public ProjectStructure next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+
+
+                ProjectStructure current = stack.pop();
+
+                List<ProjectStructure> children = current.getChildren();
+                for (ProjectStructure child : children ){
+                    stack.push(child);
+                }
+                return current;
+            }
+        };
     }
 }
 
