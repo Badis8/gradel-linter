@@ -1,4 +1,4 @@
-package org.linter;
+package org.linter.rules;
 
 import java.util.ArrayList;
 import java.util.HashMap;
