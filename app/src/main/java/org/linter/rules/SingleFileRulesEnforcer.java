@@ -21,20 +21,26 @@ public class SingleFileRulesEnforcer extends AbstractProjectStructureRulesEnforc
     @Override
     public List<RuleViolation> reviewAndReportViolations() {
         Iterator<ProjectStructure> projectStructureIterator = this.projectStructure.getProjectStructureAsAnIterator();
-        List<RuleViolation> ruleViolation = new ArrayList<>();
+        List<RuleViolation> projectRuleViolations = new ArrayList<>();
 
-        //TO-DO check a better solution , a for, inside a while, inside a for is simply bad
-
-        for(SingleFileRuleEnfocrer singleFileRuleEnfocrer : singleFileRuleEnfocrers ){
-            while(projectStructureIterator.hasNext()){
-                for(Path file : projectStructure.getDirectChildFiles())
-                    singleFileRuleEnfocrer.checkAndReportPossibleViolation(file)
-                            .ifPresent(ruleViolation::add);
+        while(projectStructureIterator.hasNext()){
+            for(Path file : projectStructure.getDirectChildFiles()) {
+                projectRuleViolations.addAll(reviewAndReportFileViolations(file));
             }
-
         }
-        return ruleViolation;
+        return projectRuleViolations;
     }
 
 
+    private List<RuleViolation> reviewAndReportFileViolations(Path file){
+        List<RuleViolation> ruleViolation = new ArrayList<>();
+        for(SingleFileRuleEnfocrer singleFileRuleEnfocrer : singleFileRuleEnfocrers ) {
+
+            singleFileRuleEnfocrer.checkAndReportPossibleViolation(file)
+                    .ifPresent(ruleViolation::add);
+
+        }
+        return  ruleViolation;
+
+    }
 }
