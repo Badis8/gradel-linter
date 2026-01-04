@@ -13,8 +13,10 @@ public class SingleFileRulesEnforcer extends AbstractProjectStructureRulesEnforc
 
 
 
-    SingleFileRulesEnforcer(Path sourceProjectPath){
+    SingleFileRulesEnforcer(Path sourceProjectPath,List<SingleFileRuleEnfocrer> singleFileRuleEnfocrers){
         this.projectStructure = new ProjectStructure(sourceProjectPath);
+
+        singleFileRuleEnfocrers = singleFileRuleEnfocrers;
     }
 
 
@@ -23,10 +25,12 @@ public class SingleFileRulesEnforcer extends AbstractProjectStructureRulesEnforc
         Iterator<ProjectStructure> projectStructureIterator = this.projectStructure.getProjectStructureAsAnIterator();
         List<RuleViolation> projectRuleViolations = new ArrayList<>();
 
+
         while(projectStructureIterator.hasNext()){
             for(Path file : projectStructure.getDirectChildFiles()) {
                 projectRuleViolations.addAll(reviewAndReportFileViolations(file));
             }
+            projectStructureIterator.next();
         }
         return projectRuleViolations;
     }

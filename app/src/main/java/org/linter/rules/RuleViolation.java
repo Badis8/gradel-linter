@@ -1,19 +1,17 @@
 package org.linter.rules;
 
-import java.util.ArrayList;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 
 public class RuleViolation {
 
-    private final HashMap<String, List<Integer>> concereteViolationsSnapshots = new HashMap<>();
+
+    private final  FileSnapshots fileSnapshots = new FileSnapshots();
     private String description;
 
-    public void addViolation(String fileName, Integer lineNumber) {
+    public void addViolation(FileSnapshots fileSnapshots ) {
 
-        this.concereteViolationsSnapshots
-                .computeIfAbsent(fileName, k -> new ArrayList<>())
-                .add(lineNumber);
     }
 
 
@@ -22,8 +20,8 @@ public class RuleViolation {
     }
 
 
-    public HashMap<String, List<Integer>> getConcereteViolationsSnapshots() {
-        return concereteViolationsSnapshots;
+    public FileSnapshots  getConcereteViolationsSnapshots() {
+        return fileSnapshots;
     }
 
     public String getDescription() {

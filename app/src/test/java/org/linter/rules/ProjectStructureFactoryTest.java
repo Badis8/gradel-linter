@@ -1,5 +1,5 @@
 
-package org.example;
+package org.linter.rules;
 
 import org.junit.Rule;
 import org.junit.Test;
